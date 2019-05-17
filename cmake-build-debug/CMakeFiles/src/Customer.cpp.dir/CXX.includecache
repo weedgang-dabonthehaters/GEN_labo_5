@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/GEN/GEN_labo_5/src/Customer.h
+string
+-
+vector
+-
+Rental.h
+C:/GEN/GEN_labo_5/src/Rental.h
+
+C:/GEN/GEN_labo_5/src/Movie.cpp
+Movie.h
+C:/GEN/GEN_labo_5/src/Movie.h
+
+C:/GEN/GEN_labo_5/src/Movie.h
+string
+-
+
+C:/GEN/GEN_labo_5/src/Rental.h
+Movie.h
+C:/GEN/GEN_labo_5/src/Movie.h
+
+C:/GEN/GEN_labo_5/src/main.cpp
+iostream
+-
+Customer.h
+C:/GEN/GEN_labo_5/src/Customer.h
+
