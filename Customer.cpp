@@ -11,6 +11,11 @@ using std::vector;
 
 using namespace std;
 
+TEST(Dummy, foobar)
+{
+EXPECT_EQ(1, 1);
+}
+
 string Customer::statement()
 {
     double totalAmount = 0;
@@ -58,10 +63,10 @@ string Customer::statement()
     return result.str();
 }
 
-using ::testing::Return;
+/*using ::testing::Return;
 using ::testing::_;
 
 class MockCustomer : public Customer {
 public:
 
-};
+};*/
