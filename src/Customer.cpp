@@ -3,6 +3,9 @@
 #include <vector>
 #include "Customer.h"
 
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+
 using std::ostringstream;
 using std::vector;
 
@@ -54,3 +57,11 @@ string Customer::statement()
            << " frequent renter points";
     return result.str();
 }
+
+using ::testing::Return;
+using ::testing::_;
+
+class MockCustomer : public Customer {
+public:
+
+};
