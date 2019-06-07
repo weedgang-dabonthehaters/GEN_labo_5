@@ -11,9 +11,9 @@ public:
 
     Movie( const std::string& title, int priceCode = REGULAR );
 
-    int getPriceCode() const;
-    void setPriceCode( int arg );
-    std::string getTitle() const;
+    virtual int getPriceCode() const;
+    virtual void setPriceCode( int arg );
+    virtual std::string getTitle() const;
 
 private:
     std::string _title;
