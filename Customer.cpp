@@ -82,9 +82,7 @@ public:
     MOCK_CONST_METHOD0(getMovie, const std::shared_ptr<Movie>());
 };
 
-MockRental::MockRental(const std::shared_ptr<Movie> &movie, int daysRented) : Rental(movie, daysRented) {
-
-}
+MockRental::MockRental(const std::shared_ptr<Movie> &movie, int daysRented) : Rental(movie, daysRented) {}
 
 
 using ::testing::Return;

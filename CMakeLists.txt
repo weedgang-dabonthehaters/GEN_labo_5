@@ -36,3 +36,8 @@ endif()
 add_executable(Customer Customer.cpp)
 target_link_libraries(Customer gtest gmock_main)
 add_test(NAME Customer_test COMMAND Customer)
+
+# Trivial example using gtest and gmock
+add_executable(Movie Movie.cpp)
+target_link_libraries(Movie gtest gmock_main)
+add_test(NAME Movie_test COMMAND Movie)
