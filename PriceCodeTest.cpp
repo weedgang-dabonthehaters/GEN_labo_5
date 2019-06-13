@@ -43,3 +43,11 @@ TEST(RegularTestBonus, getAmount){
     EXPECT_EQ(regular.bonus(10), 1);
     EXPECT_EQ(regular.bonus(-1), 1);
 }
+
+TEST(ChildrensTestBonus, getAmount){
+    Childrens childrens;
+
+    EXPECT_EQ(childrens.bonus(0), 1);
+    EXPECT_EQ(childrens.bonus(10), 1);
+    EXPECT_EQ(childrens.bonus(-1), 1);
+}
