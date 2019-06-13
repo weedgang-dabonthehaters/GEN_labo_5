@@ -18,6 +18,7 @@ public:
     std::string statement();
     double getTotalAmount();
     int getTotalPoint();
+    std::string getRentalList();
 
 private:
     std::string _name;

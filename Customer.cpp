@@ -19,13 +19,7 @@ string Customer::statement()
     auto iter_end = _rentals.end();
     ostringstream result;
     result << "Rental Record for " << getName() << "\n";
-    for ( ; iter != iter_end; ++iter ) {
-        auto each = *iter;
-
-        // show figures for this rental
-        result << "\t" << each->getMovie()->getTitle() << "\t"
-               << each->getRentalAmount() << "\n";
-    }
+    result << getRentalList();
     // add footer lines
     result << "Amount owed is " << getTotalAmount() << "\n";
     result << "You earned " << getTotalPoint()
@@ -58,6 +52,20 @@ int Customer::getTotalPoint() {
         frequentRenterPoints += each->getMovie()->getPriceCode()->bonus(each->getDaysRented());
     }
     return frequentRenterPoints;
+}
+
+std::string Customer::getRentalList() {
+    auto iter = _rentals.begin();
+    auto iter_end = _rentals.end();
+    ostringstream result;
+    for ( ; iter != iter_end; ++iter ) {
+        auto each = *iter;
+
+        // show figures for this rental
+        result << "\t" << each->getMovie()->getTitle() << "\t"
+               << each->getRentalAmount() << "\n";
+    }
+    return result.str();
 }
 
 // Mock class
