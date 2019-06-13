@@ -37,6 +37,13 @@ add_executable(Customer Customer.cpp PriceCode.h)
 target_link_libraries(Customer gtest gmock_main)
 add_test(NAME Customer_test COMMAND Customer)
 
+# Trivial example using gtest and gmock
+add_executable(PriceCodeTest PriceCodeTest.cpp)
+target_link_libraries(PriceCodeTest gtest gmock_main)
+add_test(NAME Regular_test_getAmount COMMAND RegularTestAmount)
+add_test(NAME Childrens_test_getAmount COMMAND ChildrensTestAmount)
+add_test(NAME NewRelease_test_getAmount COMMAND NewReleaseTestAmount)
+
 add_executable(main main.cpp)
 
 
