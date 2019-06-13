@@ -35,7 +35,17 @@ endif()
 # Trivial example using gtest and gmock
 add_executable(Customer Customer.cpp PriceCode.h)
 target_link_libraries(Customer gtest gmock_main)
-add_test(NAME Customer_test COMMAND Customer)
+add_test(NAME Customer_test COMMAND CustomerTest)
+
+# Trivial example using gtest and gmock
+add_executable(PriceCodeTest PriceCodeTest.cpp)
+target_link_libraries(PriceCodeTest gtest gmock_main)
+add_test(NAME Regular_test_getAmount COMMAND RegularTestAmount)
+add_test(NAME Childrens_test_getAmount COMMAND ChildrensTestAmount)
+add_test(NAME NewRelease_test_getAmount COMMAND NewReleaseTestAmount)
+add_test(NAME Regular_test_bonus COMMAND RegularTestBonus)
+add_test(NAME Childrens_test_bonus COMMAND ChildrensTestBonus)
+add_test(NAME NewRelease_test_bonus COMMAND NewReleaseTestBonus)
 
 add_executable(main main.cpp)
 

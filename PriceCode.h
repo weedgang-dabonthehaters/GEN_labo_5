@@ -6,12 +6,15 @@
 #define rentalRENTAL_PRICECODE_H
 
 #include <utility>
+#define BONUS_COND 1
+#define POINT_BONUS 1
+#define POINT_MIN 1
 
 class PriceCode {
 public:
     explicit PriceCode();
-    virtual double getAmount(const int days) = 0;
-    virtual bool bonus() = 0;
+    virtual double getAmount(const unsigned int days) = 0;
+    virtual int bonus(const unsigned int days) = 0;
 };
 
 PriceCode::PriceCode() = default;
@@ -19,16 +22,23 @@ PriceCode::PriceCode() = default;
 class Regular : public PriceCode {
 public:
     explicit Regular();
-    virtual bool bonus() override;
-    virtual double getAmount(const int days) override;
+    virtual int bonus(const unsigned int days) override;
+    virtual double getAmount(const unsigned int days) override;
+private:
+    const double MIN_AMOUNT = 2;
+    const unsigned int DAYS_COND = 2;
+    const double DEC = 2;
+    const double RATIO = 1.5;
 };
 
-bool Regular::bonus() {return false;}
+int Regular::bonus(const unsigned int days) {return POINT_MIN;}
 
-double Regular::getAmount(const int days) {
-    double thisAmount = 2;
-    if ( days > 2 )
-        thisAmount += ( days - 2 ) * 1.5 ;
+double Regular::getAmount(const unsigned int days) {
+    double thisAmount = 0;
+    if(days)
+        thisAmount = MIN_AMOUNT;
+    if ( days > DAYS_COND )
+        thisAmount += ( days - DEC ) * RATIO ;
     return thisAmount;
 }
 
@@ -37,33 +47,44 @@ Regular::Regular() : PriceCode() {}
 class Childrens : public PriceCode{
 public:
     explicit Childrens();
-    virtual bool bonus() override;
-    virtual double getAmount(const int days) override;
+    virtual int bonus(const unsigned int days) override;
+    virtual double getAmount(const unsigned int days) override;
+private:
+    const double RATIO = 3;
 };
 
-double Childrens::getAmount(const int days) {
-    return days * 3;
+double Childrens::getAmount(const unsigned int days) {
+    return days * RATIO;
 }
 
-bool Childrens::bonus() {return false;}
+int Childrens::bonus(const unsigned int days) {return POINT_MIN;}
 
 Childrens::Childrens() : PriceCode() {}
 
 class NewRelease : public PriceCode{
 public:
     explicit NewRelease();
-    virtual bool bonus();
-    virtual double getAmount(const int days);
+    virtual int bonus(const unsigned int days) override;
+    virtual double getAmount(const unsigned int days);
+private:
+    const double MIN_AMOUNT = 1.5;
+    const unsigned int DAYS_COND = 3;
+    const double DEC = 3;
+    const double RATIO = 1.5;
 };
 
-double NewRelease::getAmount(const int days) {
-    double thisAmount = 1.5;
-    if ( days > 3 )
-        thisAmount += (days - 3 ) * 1.5;
+double NewRelease::getAmount(const unsigned int days) {
+    double thisAmount = 0;
+    if(days)
+        thisAmount = MIN_AMOUNT;
+    if ( days > DAYS_COND )
+        thisAmount += (days - DEC ) * RATIO;
     return thisAmount;
 }
 
-bool NewRelease::bonus() {return true;}
+int NewRelease::bonus(const unsigned int days) {
+    return (days > BONUS_COND) ? (POINT_BONUS + POINT_MIN) : POINT_MIN;
+}
 
 NewRelease::NewRelease() : PriceCode(){}
 

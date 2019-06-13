@@ -15,34 +15,55 @@ using namespace std;
 
 string Customer::statement()
 {
-    double totalAmount = 0;
-    int frequentRenterPoints = 0;
     auto iter = _rentals.begin();
     auto iter_end = _rentals.end();
     ostringstream result;
     result << "Rental Record for " << getName() << "\n";
+    result << getRentalList();
+    // add footer lines
+    result << "Amount owed is " << getTotalAmount() << "\n";
+    result << "You earned " << getTotalPoint()
+           << " frequent renter points";
+    return result.str();
+}
+
+double Customer::getTotalAmount() {
+    double totalAmount = 0;
+    auto iter = _rentals.begin();
+    auto iter_end = _rentals.end();
     for ( ; iter != iter_end; ++iter ) {
         double thisAmount = 0;
         auto each = *iter;
 
         // determine amounts for each line
-        thisAmount += each->getMovie()->getPriceCode()->getAmount(each->getDaysRented());
-
-        // add frequent renter points
-        frequentRenterPoints++;
-        // add bonus for a two day new release rental
-        if ( ( each->getMovie()->getPriceCode()->bonus())
-             && each->getDaysRented() > 1 ) frequentRenterPoints++;
-
-        // show figures for this rental
-        result << "\t" << each->getMovie()->getTitle() << "\t"
-               << thisAmount << "\n";
+        thisAmount += each->getRentalAmount();
         totalAmount += thisAmount;
     }
-    // add footer lines
-    result << "Amount owed is " << totalAmount << "\n";
-    result << "You earned " << frequentRenterPoints
-           << " frequent renter points";
+    return totalAmount;
+}
+
+int Customer::getTotalPoint() {
+    int frequentRenterPoints = 0;
+    auto iter = _rentals.begin();
+    auto iter_end = _rentals.end();
+    for ( ; iter != iter_end; ++iter ) {
+        auto each = *iter;
+
+        frequentRenterPoints += each->getMovie()->getPriceCode()->bonus(each->getDaysRented());
+    }
+    return frequentRenterPoints;
+}
+
+std::string Customer::getRentalList() {
+    auto iter = _rentals.begin();
+    auto iter_end = _rentals.end();
+    ostringstream result;
+    for ( ; iter != iter_end; ++iter ) {
+        auto each = *iter;
+
+        // show figures for this rental
+        result << each->getInfo();
+    }
     return result.str();
 }
 
@@ -120,5 +141,5 @@ TEST(CustomerTest, Statement){
 
     EXPECT_EQ(customer.statement(), "Rental Record for test\nAmount owed is 0\nYou earned 0 frequent renter points");
     customer.addRental(rental);
-    EXPECT_EQ(rental->getMovie()->getPriceCode()->getAmount(rental->getDaysRented()), 200);
+    EXPECT_EQ(customer.statement(), "");
 }
