@@ -16,6 +16,7 @@ public:
     virtual void addRental( const std::shared_ptr<Rental> arg );
     std::string getName() const;
     std::string statement();
+    double getTotalAmount();
 
 private:
     std::string _name;
