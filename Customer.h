@@ -13,7 +13,7 @@ public:
     Customer();
     explicit Customer( std::string  name );
 
-    virtual void addRental( const std::shared_ptr<Rental> &arg );
+    virtual void addRental( const std::shared_ptr<Rental> arg );
     std::string getName() const;
     std::string statement();
 
@@ -30,7 +30,7 @@ Customer( std::string  name )
         : _name(std::move( name )) {}
 
 inline void Customer::
-addRental( const std::shared_ptr<Rental> &arg ) { _rentals.push_back( arg ); }
+addRental( std::shared_ptr<Rental> arg ) { _rentals.push_back( std::move(arg) ); }
 
 inline std::string Customer::
 getName() const { return _name; }

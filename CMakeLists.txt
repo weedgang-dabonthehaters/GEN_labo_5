@@ -33,11 +33,10 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Trivial example using gtest and gmock
-add_executable(Customer Customer.cpp)
+add_executable(Customer Customer.cpp PriceCode.h)
 target_link_libraries(Customer gtest gmock_main)
 add_test(NAME Customer_test COMMAND Customer)
 
-# Trivial example using gtest and gmock
-add_executable(Movie Movie.cpp)
-target_link_libraries(Movie gtest gmock_main)
-add_test(NAME Movie_test COMMAND Movie)
+add_executable(main main.cpp)
+
+
