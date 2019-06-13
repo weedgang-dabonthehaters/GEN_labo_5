@@ -27,3 +27,11 @@ TEST(ChildrensTestAmount, getAmount){
     EXPECT_EQ(childrens.getAmount(10), 30);
     EXPECT_GT(childrens.getAmount(-1), -1);
 }
+
+TEST(NewReleaseTestAmount, getAmount){
+    NewRelease newRelease;
+
+    EXPECT_EQ(newRelease.getAmount(0), 0);
+    EXPECT_EQ(newRelease.getAmount(10), 12);
+    EXPECT_GT(newRelease.getAmount(-1), -1);
+}
