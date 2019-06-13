@@ -35,3 +35,11 @@ TEST(NewReleaseTestAmount, getAmount){
     EXPECT_EQ(newRelease.getAmount(10), 12);
     EXPECT_GT(newRelease.getAmount(-1), -1);
 }
+
+TEST(RegularTestBonus, getAmount){
+    Regular regular;
+
+    EXPECT_EQ(regular.bonus(0), 1);
+    EXPECT_EQ(regular.bonus(10), 1);
+    EXPECT_EQ(regular.bonus(-1), 1);
+}
