@@ -1,38 +1,38 @@
 #include <utility>
 
+#include <utility>
+
+#include <utility>
+
 // Movie.h
 #ifndef MOVIE_H
 #define MOVIE_H
 #include <string>
+#include "PriceCode.h"
 
 class Movie {
 public:
-    static const int CHILDRENS   = 2;
-    static const int REGULAR     = 0;
-    static const int NEW_RELEASE = 1;
+    explicit Movie( std::string  title, std::shared_ptr<PriceCode> priceCode );
 
-    Movie( std::string  title, int priceCode = REGULAR );
-
-    virtual int getPriceCode() const;
-    virtual void setPriceCode( int arg );
+    virtual std::shared_ptr<PriceCode> getPriceCode() const;
+    virtual void setPriceCode( std::shared_ptr<PriceCode> arg );
     virtual std::string getTitle() const;
 
 private:
     std::string _title;
-    int _priceCode;
+    std::shared_ptr<PriceCode> _priceCode;
 };
 
 inline Movie::
-Movie( std::string  title, int priceCode )
-        : _title(std::move( title ))
-        , _priceCode( priceCode )
+Movie::Movie(std::string title, std::shared_ptr<PriceCode> priceCode)
+        : _title(std::move( title )), _priceCode(std::move( priceCode ))
 {}
 
-inline int Movie::
+inline std::shared_ptr<PriceCode> Movie::
 getPriceCode() const { return _priceCode; }
 
 inline void Movie::
-setPriceCode( int arg ) { _priceCode = arg; }
+setPriceCode( std::shared_ptr<PriceCode> arg ) { _priceCode = std::move(arg); }
 
 inline std::string Movie::
 getTitle() const { return _title; }

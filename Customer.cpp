@@ -1,3 +1,5 @@
+#include <utility>
+
 // Customer.cpp
 #include <sstream>
 #include <vector>
@@ -24,26 +26,12 @@ string Customer::statement()
         auto each = *iter;
 
         // determine amounts for each line
-        switch ( each->getMovie()->getPriceCode() ) {
-            case Movie::REGULAR:
-                thisAmount += 2;
-                if ( each->getDaysRented() > 2 )
-                    thisAmount += ( each->getDaysRented() - 2 ) * 1.5 ;
-                break;
-            case Movie::NEW_RELEASE:
-                thisAmount += each->getDaysRented() * 3;
-                break;
-            case Movie::CHILDRENS:
-                thisAmount += 1.5;
-                if ( each->getDaysRented() > 3 )
-                    thisAmount += ( each->getDaysRented() - 3 ) * 1.5;
-                break;
-        }
+        thisAmount += each->getMovie()->getPriceCode()->getAmount(each->getDaysRented());
 
         // add frequent renter points
         frequentRenterPoints++;
         // add bonus for a two day new release rental
-        if ( ( each->getMovie()->getPriceCode() == Movie::NEW_RELEASE )
+        if ( ( each->getMovie()->getPriceCode()->bonus())
              && each->getDaysRented() > 1 ) frequentRenterPoints++;
 
         // show figures for this rental
@@ -66,25 +54,47 @@ public:
 
 MockCustomer::MockCustomer(const string& name) : Customer(name) {}
 
+class MockRegular : public Regular {
+public:
+    MOCK_CONST_METHOD0(bonus, bool());
+    MOCK_CONST_METHOD1(getAmount, double(const int days));
+};
+
+class MockChildrens : public Childrens {
+public:
+    MOCK_CONST_METHOD0(bonus, bool());
+    MOCK_CONST_METHOD1(getAmount, double(const int days));
+};
+
+class MockNewRelease : public NewRelease {
+public:
+    MOCK_CONST_METHOD0(bonus, bool());
+    MOCK_CONST_METHOD1(getAmount, double(const int days));
+};
+
 class MockMovie : public Movie {
 public:
-    MockMovie(const string& title, int price);
-    MOCK_CONST_METHOD0(getPriceCode, int());
+    MockMovie(const string& title, const std::shared_ptr<PriceCode> &price);
+    MOCK_CONST_METHOD0(getPriceCode, std::shared_ptr<PriceCode>());
     MOCK_CONST_METHOD0(getTitle, string());
 };
 
-MockMovie::MockMovie(const string &title, int price) : Movie(title, price) {}
+MockMovie::MockMovie(const string &title, const std::shared_ptr<PriceCode> &price) : Movie(title, price) {}
 
 class MockRental : public Rental {
 public:
-    MockRental(const std::shared_ptr<Movie> &movie, int daysRented);
+    MockRental(const std::shared_ptr<Movie> &movie, const int& daysRented);
     MOCK_CONST_METHOD0(getDaysRented, int());
-    MOCK_CONST_METHOD0(getMovie, const std::shared_ptr<Movie>());
+    MOCK_CONST_METHOD0(getMovie, std::shared_ptr<Movie>());
 };
 
-MockRental::MockRental(const std::shared_ptr<Movie> &movie, int daysRented) : Rental(movie, daysRented) {
+MockRental::MockRental(const std::shared_ptr<Movie> &movie, const int& daysRented) : Rental(movie, daysRented) {}
 
-}
+class MockPriceCode : public PriceCode {
+public:
+    MOCK_CONST_METHOD0(bonus, bool());
+    MOCK_CONST_METHOD1(getAmount, double(const int& days));
+};
 
 
 using ::testing::Return;
@@ -95,16 +105,20 @@ using ::testing::Return;
 //Mock test
 TEST(CustomerTest, Statement){
     MockCustomer customer("test");
-    std::shared_ptr<MockMovie> movie(new MockMovie("licorne", 10));
-    std::shared_ptr<MockRental> rental(new MockRental(movie, 10));
+    shared_ptr<MockChildrens> priceCode = shared_ptr<MockChildrens>(new MockChildrens());
+    shared_ptr<MockMovie> movie = shared_ptr<MockMovie>(new MockMovie("licorne", priceCode));
+    shared_ptr<MockRental> rental = shared_ptr<MockRental>(new MockRental(movie, 10));
 
-    EXPECT_CALL(*movie, getPriceCode()).WillRepeatedly(Return(MockMovie::NEW_RELEASE));
+    EXPECT_CALL(*movie, getPriceCode()).WillRepeatedly(Return(priceCode));
     EXPECT_CALL(*movie, getTitle()).WillRepeatedly(Return("licorne le retour"));
 
     EXPECT_CALL(*rental, getDaysRented()).WillRepeatedly(Return(666));
     EXPECT_CALL(*rental, getMovie()).WillRepeatedly(Return(movie));
 
+    EXPECT_CALL(*priceCode, getAmount(rental->getDaysRented())).WillRepeatedly(Return(200));
+    EXPECT_CALL(*priceCode, bonus()).WillRepeatedly(Return(false));
+
     EXPECT_EQ(customer.statement(), "Rental Record for test\nAmount owed is 0\nYou earned 0 frequent renter points");
     customer.addRental(rental);
-    EXPECT_EQ(customer.statement(), "Rental Record for test\n\tlicorne le retour\t30\nAmount owed is 30\nYou earned 2 frequent renter points");
+    EXPECT_EQ(rental->getMovie()->getPriceCode()->getAmount(rental->getDaysRented()), 200);
 }
