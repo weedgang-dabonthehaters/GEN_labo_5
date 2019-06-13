@@ -24,13 +24,11 @@ string Customer::statement()
         double thisAmount = 0;
         auto each = *iter;
 
-        // determine amounts for each line
-        thisAmount += each->getMovie()->getPriceCode()->getAmount(each->getDaysRented());
         frequentRenterPoints += each->getMovie()->getPriceCode()->bonus(each->getDaysRented());
 
         // show figures for this rental
         result << "\t" << each->getMovie()->getTitle() << "\t"
-               << thisAmount << "\n";
+               << each->getRentalAmount() << "\n";
     }
     // add footer lines
     result << "Amount owed is " << getTotalAmount() << "\n";
@@ -48,7 +46,7 @@ double Customer::getTotalAmount() {
         auto each = *iter;
 
         // determine amounts for each line
-        thisAmount += each->getMovie()->getPriceCode()->getAmount(each->getDaysRented());
+        thisAmount += each->getRentalAmount();
         totalAmount += thisAmount;
     }
     return totalAmount;

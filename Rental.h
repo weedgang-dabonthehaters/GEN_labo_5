@@ -15,6 +15,7 @@ public:
 
     virtual int getDaysRented() const;
     virtual std::shared_ptr<Movie> getMovie() const;
+    virtual double getRentalAmount() const;
 
 private:
     std::shared_ptr<Movie> _movie;
@@ -33,5 +34,9 @@ inline std::shared_ptr<Movie> Rental::
 getMovie() const { return _movie; }
 
 Rental::Rental(std::shared_ptr<Movie> movie) : _movie(std::move(movie)) {}
+
+double Rental::getRentalAmount() const {
+    return _movie->getPriceCode()->getAmount(_daysRented);
+}
 
 #endif // RENTAL_H
