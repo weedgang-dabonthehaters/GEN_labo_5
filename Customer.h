@@ -17,6 +17,7 @@ public:
     std::string getName() const;
     std::string statement();
     double getTotalAmount();
+    int getTotalPoint();
 
 private:
     std::string _name;

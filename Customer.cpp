@@ -15,16 +15,12 @@ using namespace std;
 
 string Customer::statement()
 {
-    int frequentRenterPoints = 0;
     auto iter = _rentals.begin();
     auto iter_end = _rentals.end();
     ostringstream result;
     result << "Rental Record for " << getName() << "\n";
     for ( ; iter != iter_end; ++iter ) {
-        double thisAmount = 0;
         auto each = *iter;
-
-        frequentRenterPoints += each->getMovie()->getPriceCode()->bonus(each->getDaysRented());
 
         // show figures for this rental
         result << "\t" << each->getMovie()->getTitle() << "\t"
@@ -32,7 +28,7 @@ string Customer::statement()
     }
     // add footer lines
     result << "Amount owed is " << getTotalAmount() << "\n";
-    result << "You earned " << frequentRenterPoints
+    result << "You earned " << getTotalPoint()
            << " frequent renter points";
     return result.str();
 }
@@ -50,6 +46,18 @@ double Customer::getTotalAmount() {
         totalAmount += thisAmount;
     }
     return totalAmount;
+}
+
+int Customer::getTotalPoint() {
+    int frequentRenterPoints = 0;
+    auto iter = _rentals.begin();
+    auto iter_end = _rentals.end();
+    for ( ; iter != iter_end; ++iter ) {
+        auto each = *iter;
+
+        frequentRenterPoints += each->getMovie()->getPriceCode()->bonus(each->getDaysRented());
+    }
+    return frequentRenterPoints;
 }
 
 // Mock class
