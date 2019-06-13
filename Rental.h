@@ -16,6 +16,8 @@ public:
     virtual int getDaysRented() const;
     virtual std::shared_ptr<Movie> getMovie() const;
     virtual double getRentalAmount() const;
+    friend std::ostream &operator<<( std::ostream &output, const Rental &r );
+    virtual std::string getInfo();
 
 private:
     std::shared_ptr<Movie> _movie;
@@ -37,6 +39,19 @@ Rental::Rental(std::shared_ptr<Movie> movie) : _movie(std::move(movie)) {}
 
 double Rental::getRentalAmount() const {
     return _movie->getPriceCode()->getAmount(_daysRented);
+}
+
+std::ostream &operator<<(std::ostream &output, const Rental &r) {
+    output << "\t" << r.getMovie()->getTitle() << "\t"
+           << r.getRentalAmount() << "\n";
+    return output;
+}
+
+std::string Rental::getInfo() {
+    std::ostringstream output;
+    output << "\t" << getMovie()->getTitle() << "\t"
+           << getRentalAmount() << "\n";
+    return output.str();
 }
 
 #endif // RENTAL_H

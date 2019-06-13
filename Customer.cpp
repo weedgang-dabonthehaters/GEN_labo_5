@@ -62,8 +62,7 @@ std::string Customer::getRentalList() {
         auto each = *iter;
 
         // show figures for this rental
-        result << "\t" << each->getMovie()->getTitle() << "\t"
-               << each->getRentalAmount() << "\n";
+        result << each->getInfo();
     }
     return result.str();
 }
@@ -142,5 +141,5 @@ TEST(CustomerTest, Statement){
 
     EXPECT_EQ(customer.statement(), "Rental Record for test\nAmount owed is 0\nYou earned 0 frequent renter points");
     customer.addRental(rental);
-    EXPECT_EQ(rental->getMovie()->getPriceCode()->getAmount(rental->getDaysRented()), 200);
+    EXPECT_EQ(customer.statement(), "");
 }
