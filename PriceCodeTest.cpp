@@ -19,3 +19,11 @@ TEST(RegularTestAmount, getAmount){
     EXPECT_EQ(regular.getAmount(10), 14);
     EXPECT_GT(regular.getAmount(-1), -1);
 }
+
+TEST(ChildrensTestAmount, getAmount){
+    Childrens childrens;
+
+    EXPECT_EQ(childrens.getAmount(0), 0);
+    EXPECT_EQ(childrens.getAmount(10), 30);
+    EXPECT_GT(childrens.getAmount(-1), -1);
+}
