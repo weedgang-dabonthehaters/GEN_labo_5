@@ -31,13 +31,14 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
     include_directories("${gtest_SOURCE_DIR}/include"
                         "${gmock_SOURCE_DIR}/include")
 endif()
-
-# Trivial example using gtest and gmock
-add_executable(Customer Customer.cpp PriceCode.h)
-target_link_libraries(Customer gtest gmock_main)
-add_test(NAME Customer_test COMMAND CustomerTest)
-
-# Trivial example using gtest and gmock
+#
+## Trivial example using gtest and gmock
+add_executable(CustomerTest CustomerTest.cpp PriceCode.h)
+target_link_libraries(CustomerTest gtest gmock_main)
+add_test(NAME Customer_test_mock COMMAND CustomerTestMock)
+add_test(NAME Customer_test_empty COMMAND CustomerTestEmpty)
+#
+## Trivial example using gtest and gmock
 add_executable(PriceCodeTest PriceCodeTest.cpp)
 target_link_libraries(PriceCodeTest gtest gmock_main)
 add_test(NAME Regular_test_getAmount COMMAND RegularTestAmount)
@@ -48,5 +49,4 @@ add_test(NAME Childrens_test_bonus COMMAND ChildrensTestBonus)
 add_test(NAME NewRelease_test_bonus COMMAND NewReleaseTestBonus)
 
 add_executable(main main.cpp)
-
-
+target_link_libraries(main gtest gmock_main)

@@ -10,6 +10,11 @@ using ::testing::Return;
 using ::testing::_;
 using ::testing::ReturnRef;
 using ::testing::Return;
+//
+//int main() {
+//    testing::InitGoogleTest();
+//    return RUN_ALL_TESTS();
+//}
 
 //Mock test
 TEST(RegularTestAmount, getAmount){
