@@ -1,6 +1,5 @@
-#include <utility>
-
-#include <utility>
+//#include <utility>
+#include <sstream>
 
 // Rental.h
 #ifndef RENTAL_H
@@ -16,7 +15,6 @@ public:
     virtual int getDaysRented() const;
     virtual std::shared_ptr<Movie> getMovie() const;
     virtual double getRentalAmount() const;
-    friend std::ostream &operator<<( std::ostream &output, const Rental &r );
     virtual std::string getInfo();
 
 private:
@@ -39,12 +37,6 @@ Rental::Rental(std::shared_ptr<Movie> movie) : _movie(std::move(movie)) {}
 
 double Rental::getRentalAmount() const {
     return _movie->getPriceCode()->getAmount(_daysRented);
-}
-
-std::ostream &operator<<(std::ostream &output, const Rental &r) {
-    output << "\t" << r.getMovie()->getTitle() << "\t"
-           << r.getRentalAmount() << "\n";
-    return output;
 }
 
 std::string Rental::getInfo() {
